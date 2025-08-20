@@ -1,26 +1,35 @@
 'use client';
 import { useFlights } from "@/hooks/useFlights";
+import { FlightInfo } from "@/types/form/step1";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-export default function Step1({ onNext }: { onNext: () => void }) {
+export default function Step1({ onNext, data, updateData }: { onNext: () => void, data: FlightInfo, updateData: (data: FlightInfo) => void }) {
     const { flights, loading } = useFlights();
     const [minDate, setMinDate] = useState<string>('');
 
-    useEffect(() => {
+    useState(() => {
         const today = new Date().toISOString().split('T')[0];
         setMinDate(today);
-    }, []);
+    });
 
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        onNext();
+    };
+
+    const handleChange = (field: keyof FlightInfo, value: string) => {
+        updateData({ ...data, [field]: value });
+    };
+
+    const destinations = Array.from(new Set(flights.map(flight => flight.destination)));
+    const flightClasses = Array.from(new Set(flights.map(flight => flight.class)));
 
     return (
         <div className="mx-auto max-w-2xl rounded-xl bg-white dark:bg-gray-800 shadow-md ring-1 ring-gray-200 dark:ring-white/10 p-2">
             <form
                 className="p-8"
-                onSubmit={e => {
-                    e.preventDefault();
-                    onNext();
-                }}
+                onSubmit={handleSubmit}
             >
                 <div className="space-y-12">
                     <div className="border-b border-white/10 pb-12">
@@ -39,15 +48,15 @@ export default function Step1({ onNext }: { onNext: () => void }) {
                                 </label>
                                 <div className="mt-2">
                                     <input
-                                        
+
                                         list="destinations"
-                                        id="destination"
-                                        name="destination"
+                                        value={data.destination}
+                                        onChange={(e) => handleChange('destination', e.target.value)}
                                         placeholder="Elige un destino"
                                         className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6 appearance-none"
                                     />
                                     <datalist id="destinations">
-                                        {Array.from(new Set(flights.map(flight => flight.destination))).map(dest => (
+                                        {destinations.map(dest => (
                                             <option key={dest} value={dest} />
                                         ))}
                                     </datalist>
@@ -63,10 +72,9 @@ export default function Step1({ onNext }: { onNext: () => void }) {
                                 </label>
                                 <div className="mt-2">
                                     <input
-                                        
-                                        id="start-date"
-                                        name="start-date"
                                         type="date"
+                                        value={data.startDate}
+                                        onChange={(e) => handleChange('startDate', e.target.value)}
                                         min={minDate}
                                         className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base  outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
                                     />
@@ -81,11 +89,10 @@ export default function Step1({ onNext }: { onNext: () => void }) {
                                 </label>
                                 <div className="mt-2">
                                     <input
-                                        
-                                        id="return-date"
-                                        name="return-date"
                                         type="date"
-                                        min={minDate}
+                                        value={data.returnDate}
+                                        onChange={(e) => handleChange('returnDate', e.target.value)}
+                                        min={data.startDate || minDate}
                                         className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base  outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
                                     />
                                 </div>
@@ -99,16 +106,14 @@ export default function Step1({ onNext }: { onNext: () => void }) {
                                 </label>
                                 <div className="mt-2 grid grid-cols-1">
                                     <select
-                                        
-                                        id="flight-class"
-                                        name="flight-class"
-                                        autoComplete="flight-class"
+
+                                        value={data.flightClass}
+                                        onChange={(e) => handleChange('flightClass', e.target.value)}
                                         className="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pr-8 pl-3 text-base sm:text-sm/6 bg-black/6 text-black border border-gray-300 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-400 dark:bg-white/5 dark:text-white dark:border-transparent dark:outline-white/10 dark:focus:outline-indigo-500 dark:*:bg-gray-800"
-                                    >
-                                        {Array.from(new Set(flights.map(flight => flight.class))).map(flightClass => (
-                                            <option key={flightClass} value={flightClass} >
-                                                {flightClass}
-                                            </option>
+                                    >   
+                                  
+                                        {flightClasses.map(cls => (
+                                            <option key={cls} value={cls}>{cls}</option>
                                         ))}
                                     </select>
                                 </div>

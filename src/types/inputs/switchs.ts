@@ -1,5 +1,6 @@
+import React from "react";
 export interface SwitchInputProps {
   checked: boolean;
-  onChange: () => void;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   label: string;
 }

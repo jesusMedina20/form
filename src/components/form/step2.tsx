@@ -2,15 +2,32 @@
 import { useTravelers } from '@/hooks/useTravelers';
 import SwitchInput from '../inputs/switch';
 import { useState } from 'react';
+import { TravelersInfo } from '@/types/form/step2';
 
-export default function Step2({ onBack, onNext }: { onBack: () => void; onNext: () => void }) {
-    const { numberOfTravelers, handleNumberOfTravelersChange } = useTravelers();
+export default function Step2({ data, updateData, onNext, onBack }: {
+    data: TravelersInfo;
+    updateData: (data: TravelersInfo) => void;
+    onNext: () => void;
+    onBack: () => void;
+}) {
+    const { localData, handleNumberOfTravelersChange, handleTravelerChange, handleChangeExtras } = useTravelers(data);
     const [petChecked, setPetChecked] = useState(false);
     const [suitcasesChecked, setSuitcasesChecked] = useState(false);
 
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        updateData(localData);
+        if (localData.numberOfTravelers === 0 || localData.travelers.length === 0) {
+            alert("El número de viajeros debe ser al menos 1.");
+            return;
+        }
+        onNext();
+    };
+
+
     return (
         <div className="mx-auto max-w-2xl rounded-xl bg-white dark:bg-gray-800 shadow-md ring-1 ring-gray-200 dark:ring-white/10 p-2">
-            <form className="p-8 ">
+            <form className="p-8" onSubmit={handleSubmit}>
                 <div className="space-y-12">
                     <div className="border-b border-white/10 pb-12">
                         <h2 className="text-base/7 font-semibold ">Formulario del viajero</h2>
@@ -25,19 +42,20 @@ export default function Step2({ onBack, onNext }: { onBack: () => void; onNext: 
                                 </label>
                                 <div className="mt-2">
                                     <input
-                                        type="number"
+                                        type="text"
                                         min="1"
                                         max="10"
                                         id="number-of-travelers"
                                         name="number-of-travelers"
-                                        value={numberOfTravelers}
+                                        required
+                                        value={localData.numberOfTravelers}
                                         onChange={(e) => handleNumberOfTravelersChange(e.target.value)}
                                         className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6 appearance-none"
                                         placeholder="Ingresa un número entre 1 y 10"
                                     />
                                 </div>
 
-                                {numberOfTravelers !== '' && Array.from({ length: Number(numberOfTravelers) }, (_, index) => (
+                                {localData.travelers.map((traveler, index) => (
                                     <div key={index} className="mt-6 border-t border-gray-200 pt-6">
                                         <h3 className="text-lg font-medium mb-4">Viajero {index + 1}</h3>
 
@@ -47,8 +65,8 @@ export default function Step2({ onBack, onNext }: { onBack: () => void; onNext: 
                                             </label>
                                             <input
                                                 type="text"
-                                                id={`full-name-${index}`}
-                                                name={`full-name-${index}`}
+                                                value={traveler.fullName}
+                                                onChange={(e) => handleTravelerChange(index, 'fullName', e.target.value)}
                                                 className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
                                             />
                                         </div>
@@ -59,8 +77,8 @@ export default function Step2({ onBack, onNext }: { onBack: () => void; onNext: 
                                             </label>
                                             <input
                                                 type="date"
-                                                id={`birthdate-${index}`}
-                                                name={`birthdate-${index}`}
+                                                value={traveler.birthdate}
+                                                onChange={(e) => handleTravelerChange(index, 'birthdate', e.target.value)}
                                                 className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
                                             />
                                         </div>
@@ -71,11 +89,11 @@ export default function Step2({ onBack, onNext }: { onBack: () => void; onNext: 
                                                 Tipo de documento
                                             </label>
                                             <select
-                                                id={`document-type-${index}`}
-                                                name={`document-type-${index}`}
+                                                value={traveler.documentType}
+                                                onChange={(e) => handleTravelerChange(index, 'documentType', e.target.value)}
                                                 className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
                                             >
-                                                <option value="DNI">DNI</option>
+                                                <option value="RIF">RIF</option>
                                                 <option value="Pasaporte">Pasaporte</option>
                                                 <option value="Cédula">Cédula</option>
                                             </select>
@@ -86,8 +104,8 @@ export default function Step2({ onBack, onNext }: { onBack: () => void; onNext: 
                                             </label>
                                             <input
                                                 type="text"
-                                                id={`document-number-${index}`}
-                                                name={`document-number-${index}`}
+                                                value={traveler.documentNumber}
+                                                onChange={(e) => handleTravelerChange(index, 'documentNumber', e.target.value)}
                                                 className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
                                             />
                                         </div>
@@ -98,7 +116,8 @@ export default function Step2({ onBack, onNext }: { onBack: () => void; onNext: 
                             <div className="sm:col-span-full">
                                 <SwitchInput
                                     checked={petChecked}
-                                    onChange={() => setPetChecked(!petChecked)}
+
+                                    onChange={(e) => { handleChangeExtras('hasPets', e.target.checked); setPetChecked(!petChecked); }}
                                     label="¿Viajas con mascotas?"
                                 />
                                 {petChecked && (
@@ -111,8 +130,8 @@ export default function Step2({ onBack, onNext }: { onBack: () => void; onNext: 
                                                 type="number"
                                                 min="1"
                                                 max="10"
-                                                id="number-of-pets"
-                                                name="number-of-pets"
+                                                value={localData.numberOfPets || ''}
+                                                onChange={(e) => handleChangeExtras('numberOfPets', e.target.value)}
                                                 className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6 appearance-none"
                                                 placeholder="Ingresa un número entre 1 y 10"
                                             />
@@ -121,7 +140,7 @@ export default function Step2({ onBack, onNext }: { onBack: () => void; onNext: 
                                 )}
                                 <SwitchInput
                                     checked={suitcasesChecked}
-                                    onChange={() => setSuitcasesChecked(!suitcasesChecked)}
+                                    onChange={(e) => { handleChangeExtras('hasSuitcases', e.target.checked); setSuitcasesChecked(!suitcasesChecked); }}
                                     label="¿Necesitas maletas extra?"
                                 />
                                 {suitcasesChecked && (
@@ -134,8 +153,8 @@ export default function Step2({ onBack, onNext }: { onBack: () => void; onNext: 
                                                 type="number"
                                                 min="1"
                                                 max="10"
-                                                id="number-of-suitcases"
-                                                name="number-of-suitcases"
+                                                value={localData.numberOfSuitcases || ''}
+                                                onChange={(e) => handleChangeExtras('numberOfSuitcases', e.target.value)}
                                                 className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6 appearance-none"
                                                 placeholder="Ingresa un número entre 1 y 10"
                                             />
@@ -152,7 +171,7 @@ export default function Step2({ onBack, onNext }: { onBack: () => void; onNext: 
                         Back
                     </button>
 
-                    <button type="submit" onClick={onNext} className="primary-button">
+                    <button type="submit" className="primary-button">
                         Next
                     </button>
                 </div>
