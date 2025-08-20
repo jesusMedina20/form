@@ -65,6 +65,7 @@ export default function Step2({ data, updateData, onNext, onBack }: {
                                             </label>
                                             <input
                                                 type="text"
+                                                required
                                                 value={traveler.fullName}
                                                 onChange={(e) => handleTravelerChange(index, 'fullName', e.target.value)}
                                                 className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
@@ -77,6 +78,7 @@ export default function Step2({ data, updateData, onNext, onBack }: {
                                             </label>
                                             <input
                                                 type="date"
+                                                required
                                                 value={traveler.birthdate}
                                                 onChange={(e) => handleTravelerChange(index, 'birthdate', e.target.value)}
                                                 className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
@@ -89,9 +91,10 @@ export default function Step2({ data, updateData, onNext, onBack }: {
                                                 Tipo de documento
                                             </label>
                                             <select
+                                                required
                                                 value={traveler.documentType}
                                                 onChange={(e) => handleTravelerChange(index, 'documentType', e.target.value)}
-                                                className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
+                                                className="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pr-8 pl-3 text-base sm:text-sm/6 bg-black/6 text-black border border-gray-300 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-400 dark:bg-white/5 dark:text-white dark:border-transparent dark:outline-white/10 dark:focus:outline-indigo-500 dark:*:bg-gray-800"
                                             >
                                                 <option value="RIF">RIF</option>
                                                 <option value="Pasaporte">Pasaporte</option>
@@ -103,10 +106,11 @@ export default function Step2({ data, updateData, onNext, onBack }: {
                                                 Número de documento
                                             </label>
                                             <input
-                                                type="text"
+                                                type="number"
+                                                required
                                                 value={traveler.documentNumber}
                                                 onChange={(e) => handleTravelerChange(index, 'documentNumber', e.target.value)}
-                                                className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
+                                                className="block  w-full rounded-md bg-white/5 px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
                                             />
                                         </div>
                                     </div>
@@ -127,6 +131,7 @@ export default function Step2({ data, updateData, onNext, onBack }: {
                                         </label>
                                         <div className="mt-2">
                                             <input
+                                                required
                                                 type="number"
                                                 min="1"
                                                 max="10"
@@ -150,6 +155,7 @@ export default function Step2({ data, updateData, onNext, onBack }: {
                                         </label>
                                         <div className="mt-2">
                                             <input
+                                                required
                                                 type="number"
                                                 min="1"
                                                 max="10"

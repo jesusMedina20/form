@@ -48,8 +48,9 @@ export default function Step1({ onNext, data, updateData }: { onNext: () => void
                                 </label>
                                 <div className="mt-2">
                                     <input
-
+                                        type="text"
                                         list="destinations"
+                                        required
                                         value={data.destination}
                                         onChange={(e) => handleChange('destination', e.target.value)}
                                         placeholder="Elige un destino"
@@ -73,6 +74,8 @@ export default function Step1({ onNext, data, updateData }: { onNext: () => void
                                 <div className="mt-2">
                                     <input
                                         type="date"
+                                        required
+
                                         value={data.startDate}
                                         onChange={(e) => handleChange('startDate', e.target.value)}
                                         min={minDate}
@@ -90,6 +93,8 @@ export default function Step1({ onNext, data, updateData }: { onNext: () => void
                                 <div className="mt-2">
                                     <input
                                         type="date"
+                                        required
+
                                         value={data.returnDate}
                                         onChange={(e) => handleChange('returnDate', e.target.value)}
                                         min={data.startDate || minDate}
@@ -106,12 +111,12 @@ export default function Step1({ onNext, data, updateData }: { onNext: () => void
                                 </label>
                                 <div className="mt-2 grid grid-cols-1">
                                     <select
-
+                                        required
                                         value={data.flightClass}
                                         onChange={(e) => handleChange('flightClass', e.target.value)}
                                         className="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pr-8 pl-3 text-base sm:text-sm/6 bg-black/6 text-black border border-gray-300 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-400 dark:bg-white/5 dark:text-white dark:border-transparent dark:outline-white/10 dark:focus:outline-indigo-500 dark:*:bg-gray-800"
-                                    >   
-                                  
+                                    >
+
                                         {flightClasses.map(cls => (
                                             <option key={cls} value={cls}>{cls}</option>
                                         ))}

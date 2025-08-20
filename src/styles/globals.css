@@ -10,6 +10,13 @@
     @apply bg-black/5 outline-black/10 placeholder:text-gray-400 focus:outline-indigo-600
   }
 
+@layer base {
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
 
 @theme inline {
   --color-background: var(--background);

@@ -14,7 +14,7 @@ export default function AditionalServices({ data, updateData, onBack, onNext }: 
     const handleChange = (field: keyof AdditionalServices, value: boolean | string) => {
         const updated = { ...localData, [field]: value };
         setLocalData(updated);
-        updateData(updated); 
+        updateData(updated);
     };
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -57,6 +57,7 @@ export default function AditionalServices({ data, updateData, onBack, onNext }: 
                                         Describa brevemente
                                     </label>
                                     <textarea
+                                        required
                                         value={localData.specialAssistanceDescription}
                                         onChange={e => handleChange('specialAssistanceDescription', e.target.value)}
                                         rows={3}

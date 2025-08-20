@@ -54,14 +54,10 @@ export default function Page() {
       {step === 1 && <Step1 onNext={() => setStep(2)} data={formData.flight} updateData={updateFlightData} />}
       {step === 2 && <Step2 onBack={() => setStep(1)} onNext={() => setStep(3)} data={formData.travelers} updateData={updateTravelersData} />}
       {step === 3 && (
-        <AditionalServices
-
-          onBack={() => setStep(2)}
-          data={formData.services} updateData={updateServicesData}
-          onNext={() => {
-            window.localStorage.setItem('formData', JSON.stringify(formData));
-            router.push('/summary');
-          }}
+        <AditionalServices onBack={() => setStep(2)} data={formData.services} updateData={updateServicesData} onNext={() => {
+          window.localStorage.setItem('formData', JSON.stringify(formData));
+          router.push('/summary');
+        }}
         />
       )}
     </div>
