@@ -1,5 +1,6 @@
 'use client'
 import { SwitchInputProps } from "@/types/inputs/switchs";
+//Reusable Switch Component
 
 export default function SwitchInput({ checked, onChange, label }: SwitchInputProps) {
   return (

@@ -3,20 +3,35 @@ import { useState } from "react";
 import SwitchInput from "../inputs/switch";
 import { AdditionalServices } from "@/types/form/aditionalServices";
 
+//Additional services form for flight reservation
+
+// Form that allows the user to select optional services
+// for their flight reservation, conditionally including a text area for
+// describing special assistance when required
+
+
 export default function AditionalServices({ data, updateData, onBack, onNext }: {
     data: AdditionalServices;
     updateData: (data: AdditionalServices) => void;
     onNext: () => void;
     onBack: () => void;
 }) {
+
+    //  @type {AdditionalServices}
+    // {boolean} hasInsurance - Indicates whether travel insurance is included
+    // {boolean} hasPreferentialSeat - Indicates whether preferential seating is included
+    // {boolean} requiresSpecialAssistance - Indicates whether special assistance is required
+    // {string} specialAssistanceDescription - Description of the assistance required
+
     const [localData, setLocalData] = useState<AdditionalServices>(data);
 
+    //Handles changes to form fields
     const handleChange = (field: keyof AdditionalServices, value: boolean | string) => {
         const updated = { ...localData, [field]: value };
         setLocalData(updated);
         updateData(updated);
     };
-
+    //Handles form submission
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         updateData(localData);
@@ -61,7 +76,7 @@ export default function AditionalServices({ data, updateData, onBack, onNext }: 
                                         value={localData.specialAssistanceDescription}
                                         onChange={e => handleChange('specialAssistanceDescription', e.target.value)}
                                         rows={3}
-                                        className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
+                                        className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-200 dark:outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6 "
                                         maxLength={200}
                                     />
                                 </div>

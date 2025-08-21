@@ -4,25 +4,31 @@ import { FlightInfo } from "@/types/form/step1";
 import Link from "next/link";
 import { useState } from "react";
 
-export default function Step1({ onNext, data, updateData }: { onNext: () => void, data: FlightInfo, updateData: (data: FlightInfo) => void }) {
-    const { flights, loading } = useFlights();
-    const [minDate, setMinDate] = useState<string>('');
+//Component that collects basic flight information: destination, dates and class
 
+export default function Step1({ onNext, data, updateData }: { onNext: () => void, data: FlightInfo, updateData: (data: FlightInfo) => void }) {
+    // Custom hook to get available flight data
+    const { flights, loading } = useFlights();
+
+    // Status for the minimum allowed date (today)
+    const [minDate, setMinDate] = useState<string>('');
     useState(() => {
         const today = new Date().toISOString().split('T')[0];
         setMinDate(today);
     });
 
+    // Handles form submission
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         onNext();
     };
-
+    // Handles changes to form fields
     const handleChange = (field: keyof FlightInfo, value: string) => {
         updateData({ ...data, [field]: value });
     };
-
+    // Get destinations
     const destinations = Array.from(new Set(flights.map(flight => flight.destination)));
+    //Get Flight Class
     const flightClasses = Array.from(new Set(flights.map(flight => flight.class)));
 
     return (
@@ -50,6 +56,7 @@ export default function Step1({ onNext, data, updateData }: { onNext: () => void
                                     <input
                                         type="text"
                                         list="destinations"
+                                        pattern={destinations.join("|")}
                                         required
                                         value={data.destination}
                                         onChange={(e) => handleChange('destination', e.target.value)}

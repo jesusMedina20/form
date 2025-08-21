@@ -1,5 +1,5 @@
 import { BannerConfig } from "@/types/bannerConfig";
-
+//Configuring data displayed on the home page banner
 export const bannerConfig: BannerConfig = {
   title: "Welcome to Globetrotter",
   subtitle:

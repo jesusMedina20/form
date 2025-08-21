@@ -9,10 +9,12 @@ import { FlightInfo } from '@/types/form/step1';
 import { TravelersInfo } from '@/types/form/step2';
 import { AdditionalServices } from '@/types/form/aditionalServices';
 
+// Form page, manages form state, navigation between steps, and data storage before redirecting to the summary.
 export default function Page() {
-
+// State to control the current step of the form (1, 2 or 3)
   const [step, setStep] = useState<number>(1);
   const router = useRouter();
+  //State that contains all the form data
   const [formData, setFormData] = useState<FormData>({
     flight: {
       destination: '',
@@ -36,6 +38,7 @@ export default function Page() {
     },
   });
 
+  //update the form statuses
   const updateFlightData = (data: FlightInfo) => {
     setFormData(prev => ({ ...prev, flight: data }));
   };

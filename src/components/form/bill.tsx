@@ -1,45 +1,45 @@
 import { FormData } from '@/types/form/formData';
 import { useFlightPrices } from '@/hooks/useFlightPrices';
-import React from 'react'
-import toast from 'react-hot-toast';
+import React, { useEffect, useState } from 'react'
 
+//Invoice component/price breakdown
+//Calculates and displays the total due based on the reservation data stored in localStorage
 export default function Bill() {
-      const { getFlightPrice } = useFlightPrices();
-    const rawData = window.localStorage.getItem('formData');
+    // Custom hook to get flight prices
+    const { getFlightPrice } = useFlightPrices();
+    const [rawData, setRawData] = useState<FormData | null>(null);
+    //Retrieves form data stored in localStorage and sets it to local state. Runs only on the client.
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const data = window.localStorage.getItem('formData');
+            setRawData(data ? JSON.parse(data) : null);
+        }
+    }, []);
+    if (!rawData) return null;
 
 
 
-    if (!rawData) {
-
-        return null;
-    }
-    let data: FormData;
-
-    try {
-        data = JSON.parse(rawData);
-
-    } catch (e) {
-
-        return null;
-    }
-
-
-
+    //complete cost calculation
+    // Complete cost calculation based on:
+    //  - Base flight price per person
+    //  - Number of travelers
+    //  - Pet fee ($100 each)
+    //  - Baggage fee ($50 each)
 
     const totalBill = () => {
 
-        if (!data) return 0;
-        const destination = data.flight.destination;
-        const flightClass = data.flight.flightClass;
+        if (!rawData) return 0;
+        const destination = rawData.flight.destination;
+        const flightClass = rawData.flight.flightClass;
         const FlightPrice = getFlightPrice(destination, flightClass);
         let total = 0;
 
-        total += data.travelers?.numberOfTravelers * FlightPrice;
-        if (data.travelers?.hasPets) {
-            total += data.travelers.numberOfPets * 100;
+        total += rawData.travelers?.numberOfTravelers * FlightPrice;
+        if (rawData.travelers?.hasPets) {
+            total += rawData.travelers.numberOfPets * 100;
         }
-        if (data.travelers.hasSuitcases) {
-            total += data.travelers.numberOfSuitcases * 50;
+        if (rawData.travelers.hasSuitcases) {
+            total += rawData.travelers.numberOfSuitcases * 50;
         }
         return total;
     }
