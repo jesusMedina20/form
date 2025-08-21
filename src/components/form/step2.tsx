@@ -3,6 +3,7 @@ import { useTravelers } from '@/hooks/useTravelers';
 import SwitchInput from '../inputs/switch';
 import { useState } from 'react';
 import { TravelersInfo } from '@/types/form/step2';
+import toast from 'react-hot-toast';
 
 export default function Step2({ data, updateData, onNext, onBack }: {
     data: TravelersInfo;
@@ -18,7 +19,7 @@ export default function Step2({ data, updateData, onNext, onBack }: {
         e.preventDefault();
         updateData(localData);
         if (localData.numberOfTravelers === 0 || localData.travelers.length === 0) {
-            alert("El número de viajeros debe ser al menos 1.");
+            toast.error("El número de viajeros debe ser al menos 1.");
             return;
         }
         onNext();

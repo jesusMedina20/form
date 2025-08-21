@@ -4,6 +4,7 @@ import { FormData } from '@/types/form/formData';
 import { useFlightPrices } from '@/hooks/useFlightPrices';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
+import toast from 'react-hot-toast';
 
 const FormSummary = () => {
     const [rawData, setRawData] = useState<FormData | null>(null);
@@ -18,7 +19,7 @@ const FormSummary = () => {
     const router = useRouter();
 
     if (!rawData) {
-        alert('Debe rellenar el formulario en su totalidad');
+
         return null;
     }
     let data: FormData;
@@ -26,7 +27,7 @@ const FormSummary = () => {
         data = rawData;
 
     } catch (e) {
-        alert('Error al leer los datos del formulario');
+
         return null;
     }
     const destination = data.flight.destination;
@@ -34,9 +35,11 @@ const FormSummary = () => {
 
     const FlightPrice = getFlightPrice(destination, flightClass);
     const handleSubmit = () => {
-        alert('Se ha realizado la reserva correctamente');
-        window.localStorage.removeItem('formData');
-        router.push('/');
+        toast.success('Se ha realizado la reserva correctamente');
+
+        setTimeout(() => {
+            router.push('/');
+        }, 1500);
     };
     return (
         <div className='min-h-screen p-8 md:p-16'>

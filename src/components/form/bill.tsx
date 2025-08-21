@@ -1,6 +1,7 @@
 import { FormData } from '@/types/form/formData';
 import { useFlightPrices } from '@/hooks/useFlightPrices';
 import React from 'react'
+import toast from 'react-hot-toast';
 
 export default function Bill() {
       const { getFlightPrice } = useFlightPrices();
@@ -9,7 +10,7 @@ export default function Bill() {
 
 
     if (!rawData) {
-        alert('Debe rellenar el formulario en su totalidad');
+
         return null;
     }
     let data: FormData;
@@ -18,7 +19,7 @@ export default function Bill() {
         data = JSON.parse(rawData);
 
     } catch (e) {
-        alert('Error al leer los datos del formulario');
+
         return null;
     }
 
