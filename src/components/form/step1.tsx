@@ -50,6 +50,7 @@ export default function Step1({ onNext, data, updateData }: { onNext: () => void
                                     <input
                                         type="text"
                                         list="destinations"
+                                        pattern={destinations.join("|")} 
                                         required
                                         value={data.destination}
                                         onChange={(e) => handleChange('destination', e.target.value)}
@@ -75,7 +76,7 @@ export default function Step1({ onNext, data, updateData }: { onNext: () => void
                                     <input
                                         type="date"
                                         required
-
+                            
                                         value={data.startDate}
                                         onChange={(e) => handleChange('startDate', e.target.value)}
                                         min={minDate}

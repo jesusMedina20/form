@@ -36,7 +36,6 @@ const FormSummary = () => {
     const FlightPrice = getFlightPrice(destination, flightClass);
     const handleSubmit = () => {
         toast.success('Se ha realizado la reserva correctamente');
-
         setTimeout(() => {
             router.push('/');
         }, 1500);
@@ -77,23 +76,50 @@ const FormSummary = () => {
                     <div className="border-b border-white/10 pb-4">
 
                         <div className="space-y-2 text-sm/6">
-                            <p><span className="font-medium">Mascotas costo por mascotas:</span> 100$ c/u</p>
-                            <p><span className="font-medium">Número de mascotas:</span> {data.travelers.numberOfPets}</p>
-                            <p><span className="font-medium">Maletas costo por maletas:</span> 50$ c/u</p>
-                            <p><span className="font-medium">Número de maletas:</span> {data.travelers.numberOfSuitcases}</p>
-                            <p className='flex flex-col justify-between items-end'>total por mascotas:{100 * data.travelers.numberOfPets}$</p>
-                            <p className='flex flex-col justify-between items-end'>total por maletas:{50 * data.travelers.numberOfSuitcases}$</p>
+
+
+                            {data.travelers.hasPets && (
+                                <>
+                                    <p><span className="font-medium">Mascotas costo por mascotas:</span> 100$ c/u</p>
+                                    <p><span className="font-medium">Número de mascotas:</span> {data.travelers.numberOfPets}</p>
+                                    <p className='flex flex-col justify-between items-end'>total por mascotas:{100 * data.travelers.numberOfPets}$</p>
+                                </>
+                            )}
+                            {data.travelers.hasSuitcases && (
+                                <>
+                                    <p><span className="font-medium">Maletas costo por maletas:</span> 50$ c/u</p>
+                                    <p><span className="font-medium">Número de maletas:</span> {data.travelers.numberOfSuitcases}</p>
+                                    <p className='flex flex-col justify-between items-end'>total por maletas:{50 * data.travelers.numberOfSuitcases}$</p>
+                                </>
+                            )}
                         </div>
                     </div>
 
                     <div className="border-b border-white/10 pb-4">
+                         {(data.services.hasInsurance || data.services.hasPreferentialSeat || data.services.requiresSpecialAssistance) && (
                         <h3 className="text-sm/6 font-medium mb-4">Servicios Adicionales</h3>
+                         )}
                         <div className="space-y-2 text-sm/6">
-                            <p><span className="font-medium">Seguro de viaje:</span> {data.services.hasInsurance ? 'Sí' : 'No'}</p>
-                            <p><span className="font-medium">Asientos preferenciales:</span> {data.services.hasPreferentialSeat ? 'Sí' : 'No'}</p>
-                            <p><span className="font-medium">¿Requiere asistencia especial?:</span> {data.services.requiresSpecialAssistance ? 'Sí' : 'No'}</p>
+                            {data.services.hasInsurance && (
+
+                                <>
+                                    <p><span className="font-medium">Seguro de viaje:</span> {data.services.hasInsurance ? 'Sí' : 'No'}</p>
+
+                                </>
+                            )}
+                            {data.services.hasPreferentialSeat && (
+
+                                <>
+                                    <p><span className="font-medium">Asientos preferenciales:</span> {data.services.hasPreferentialSeat ? 'Sí' : 'No'}</p>
+
+                                </>
+                            )}
                             {data.services.requiresSpecialAssistance && (
-                                <p><span className="font-medium">Descripción asistencia especial:</span> {data.services.specialAssistanceDescription}</p>
+
+                                <>
+                                    <p><span className="font-medium">¿Requiere asistencia especial?:</span> {data.services.requiresSpecialAssistance ? 'Sí' : 'No'}</p>
+                                    <p><span className="font-medium">Descripción asistencia especial:</span> {data.services.specialAssistanceDescription}</p>
+                                </>
                             )}
 
 

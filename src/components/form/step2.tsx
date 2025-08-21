@@ -1,7 +1,7 @@
 'use client'
 import { useTravelers } from '@/hooks/useTravelers';
 import SwitchInput from '../inputs/switch';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { TravelersInfo } from '@/types/form/step2';
 import toast from 'react-hot-toast';
 
@@ -15,6 +15,17 @@ export default function Step2({ data, updateData, onNext, onBack }: {
     const [petChecked, setPetChecked] = useState(false);
     const [suitcasesChecked, setSuitcasesChecked] = useState(false);
 
+    const [maxDate, setMaxDate] = useState('');
+    useEffect(() => {
+        const today = new Date();
+        const adultDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
+        const year = adultDate.getFullYear();
+        const month = String(adultDate.getMonth() + 1).padStart(2, '0');
+        const day = String(adultDate.getDate()).padStart(2, '0');
+        setMaxDate(`${year}-${month}-${day}`);
+    }, []);
+
+
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         updateData(localData);
@@ -24,6 +35,8 @@ export default function Step2({ data, updateData, onNext, onBack }: {
         }
         onNext();
     };
+
+
 
 
     return (
@@ -80,7 +93,8 @@ export default function Step2({ data, updateData, onNext, onBack }: {
                                             <input
                                                 type="date"
                                                 required
-                                                value={traveler.birthdate}
+                                                max={new Date().toISOString().split('T')[0]} 
+                                                value={traveler.birthdate || maxDate}
                                                 onChange={(e) => handleTravelerChange(index, 'birthdate', e.target.value)}
                                                 className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
                                             />

@@ -14,6 +14,5 @@ export const useFlights = () => {
       })
       .catch(error => console.error('Error fetching flights:', error));
   }, []);
-
   return { flights, loading };
 };
