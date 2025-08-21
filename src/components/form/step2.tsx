@@ -5,16 +5,20 @@ import { useEffect, useState } from 'react';
 import { TravelersInfo } from '@/types/form/step2';
 import toast from 'react-hot-toast';
 
+//Component that collects detailed information from travelers, including personal data, documents, and additional options (pets, luggage).
+
 export default function Step2({ data, updateData, onNext, onBack }: {
     data: TravelersInfo;
     updateData: (data: TravelersInfo) => void;
     onNext: () => void;
     onBack: () => void;
 }) {
+    // Custom hook to manage travelers' status
     const { localData, handleNumberOfTravelersChange, handleTravelerChange, handleChangeExtras } = useTravelers(data);
+    // States to control additional option switches
     const [petChecked, setPetChecked] = useState(false);
     const [suitcasesChecked, setSuitcasesChecked] = useState(false);
-
+    //calculate the minimum age of majority (18 years)
     const [maxDate, setMaxDate] = useState('');
     useEffect(() => {
         const today = new Date();
@@ -25,7 +29,7 @@ export default function Step2({ data, updateData, onNext, onBack }: {
         setMaxDate(`${year}-${month}-${day}`);
     }, []);
 
-
+    //handle form submission
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         updateData(localData);
@@ -93,7 +97,7 @@ export default function Step2({ data, updateData, onNext, onBack }: {
                                             <input
                                                 type="date"
                                                 required
-                                                max={new Date().toISOString().split('T')[0]} 
+                                                max={new Date().toISOString().split('T')[0]}
                                                 value={traveler.birthdate || maxDate}
                                                 onChange={(e) => handleTravelerChange(index, 'birthdate', e.target.value)}
                                                 className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"

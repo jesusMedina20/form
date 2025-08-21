@@ -3,20 +3,35 @@ import { useState } from "react";
 import SwitchInput from "../inputs/switch";
 import { AdditionalServices } from "@/types/form/aditionalServices";
 
+//Additional services form for flight reservation
+
+// Form that allows the user to select optional services
+// for their flight reservation, conditionally including a text area for
+// describing special assistance when required
+
+
 export default function AditionalServices({ data, updateData, onBack, onNext }: {
     data: AdditionalServices;
     updateData: (data: AdditionalServices) => void;
     onNext: () => void;
     onBack: () => void;
 }) {
+
+    //  @type {AdditionalServices}
+    // {boolean} hasInsurance - Indicates whether travel insurance is included
+    // {boolean} hasPreferentialSeat - Indicates whether preferential seating is included
+    // {boolean} requiresSpecialAssistance - Indicates whether special assistance is required
+    // {string} specialAssistanceDescription - Description of the assistance required
+
     const [localData, setLocalData] = useState<AdditionalServices>(data);
 
+    //Handles changes to form fields
     const handleChange = (field: keyof AdditionalServices, value: boolean | string) => {
         const updated = { ...localData, [field]: value };
         setLocalData(updated);
         updateData(updated);
     };
-
+    //Handles form submission
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         updateData(localData);

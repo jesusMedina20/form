@@ -1,7 +1,12 @@
 import { useFlights } from "@/hooks/useFlights";
-
+//Custom hook to get flight prices
 export function useFlightPrices() {
   const { flights, loading } = useFlights();
+  
+// * @description Searches for and returns the price of a flight based on destination and class
+// * @param {string} destination - Flight destination (e.g., "New York")
+// * @param {string} flightClass - Flight class (e.g., "Economy", "Business")
+// * @returns {number} Price in USD for the flight, or 0 if not found
 
   const getFlightPrice = (destination: string, flightClass: string): number => {
     if (!flights) return 0; 

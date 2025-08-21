@@ -2,12 +2,14 @@ import Image from "next/image";
 import { bannerConfig } from "@/utils/bannerConfig";
 import Link from "next/link";
 
+// This is the home page of route "/"
+// The bannerConfig.ts is a file where you can modify the text and image of the home page banner.
+// the button redirects to the form page
 
 export default function Home() {
   return (
     <div className="relative min-h-screen">
       <div className="absolute inset-0 bg-black/50 z-10" />
-
       <Image
         src={bannerConfig.src}
         alt="Travel landscape"
