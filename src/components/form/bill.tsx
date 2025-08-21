@@ -40,7 +40,6 @@ export default function Bill() {
         if (data.travelers.hasSuitcases) {
             total += data.travelers.numberOfSuitcases * 50;
         }
-        console.log(total)
         return total;
     }
 

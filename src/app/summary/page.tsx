@@ -3,10 +3,17 @@ import Bill from '@/components/form/bill';
 import { FormData } from '@/types/form/formData';
 import { useFlightPrices } from '@/hooks/useFlightPrices';
 import { useRouter } from 'next/navigation';
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 const FormSummary = () => {
-    const rawData = window.localStorage.getItem('formData');
+    const [rawData, setRawData] = useState<FormData | null>(null);
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const data = window.localStorage.getItem('formData');
+            setRawData(data ? JSON.parse(data) : null);
+        }
+    }, []);
+
     const { getFlightPrice } = useFlightPrices();
     const router = useRouter();
 
@@ -16,7 +23,7 @@ const FormSummary = () => {
     }
     let data: FormData;
     try {
-        data = JSON.parse(rawData);
+        data = rawData;
 
     } catch (e) {
         alert('Error al leer los datos del formulario');
